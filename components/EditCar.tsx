@@ -5,7 +5,7 @@ import { LinearProgress } from "@mui/material";
 import { NotifyData, WordShape } from "@/types";
 
 async function getWord(id: string) {
-  const res = await fetch(`http://localhost:3000/api/words/${id}`, {
+  const res = await fetch(`api/words/${id}`, {
     cache: "no-cache",
     next: {
       tags: ["words"]

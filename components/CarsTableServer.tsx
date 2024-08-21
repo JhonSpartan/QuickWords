@@ -2,7 +2,7 @@ import { WordShape } from "@/types";
 import CarsTableClient from "./CarsTableClient";
 
 async function getWords() {
-  const res = await fetch(`http://localhost:3000/api/words`, {
+  const res = await fetch(`api/words`, {
     cache: "no-cache",
     next: {
       tags: ["words"]
