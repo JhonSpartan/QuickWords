@@ -7,7 +7,7 @@ import { NotifyData, WordShape } from "@/types";
 const URL = '';
 
 async function getWord(id: string) {
-  const res = await fetch(`${URL}/api/words/${id}`, {
+  const res = await fetch(`https://quick-words.vercel.app/api/words/${id}`, {
     cache: "no-cache",
     next: {
       tags: ["words"]

@@ -1,10 +1,9 @@
 import { WordShape } from "@/types";
 import CarsTableClient from "./CarsTableClient";
 
-const URL = '';
 
 async function getWords() {
-  const res = await fetch(`${URL}/api/words`, {
+  const res = await fetch(`https://quick-words.vercel.app/api/words`, {
     cache: "no-cache",
     next: {
       tags: ["words"]
