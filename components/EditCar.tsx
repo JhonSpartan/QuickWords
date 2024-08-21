@@ -4,8 +4,10 @@ import EditForm from "./form/EditForm";
 import { LinearProgress } from "@mui/material";
 import { NotifyData, WordShape } from "@/types";
 
+const URL = '';
+
 async function getWord(id: string) {
-  const res = await fetch(`api/words/${id}`, {
+  const res = await fetch(`${URL}/api/words/${id}`, {
     cache: "no-cache",
     next: {
       tags: ["words"]
