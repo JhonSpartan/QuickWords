@@ -4,6 +4,7 @@ import CarsTableClient from "./CarsTableClient";
 
 async function getWords() {
   const res = await fetch(`https://quick-words.vercel.app/api/words`, {
+    
     cache: "no-cache",
     next: {
       tags: ["words"]

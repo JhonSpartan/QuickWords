@@ -18,6 +18,8 @@ import EditCar from './EditCar';
 import Notification from './Notification';
 import ClipboardJS from 'clipboard';
 import EditIcon from '@mui/icons-material/Edit';
+import { useCars } from '@/libs/hooks';
+// import { useGetCar } from '@/libs/hooks';
 
 
 const CarsTableClient = (props: {words: WordShape[]}) => {
@@ -84,6 +86,18 @@ const CarsTableClient = (props: {words: WordShape[]}) => {
       clipboard.destroy();
     }
   }, []);
+
+  const { status, isFetching, error, data} = useCars();
+
+  if (isFetching) return (
+    <div>
+      <h1>Loading...</h1>
+      <LinearProgress />
+    </div>
+  )
+  if (status === 'error') return <h1>{JSON.stringify(error)}</h1>
+  if (!data) return <h1>Car not found</h1>
+  console.log(data)
 
   return (
       <>

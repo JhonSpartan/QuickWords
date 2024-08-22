@@ -10,3 +10,12 @@ export async function GET() {
   const words = await Word.find();
   return NextResponse.json({ words });
 }
+
+export async function POST(request: Request) {
+  const word = await request.json();
+  const { text, fontSize, color, uniqueKey } = word;
+
+  await connectToDB();
+  await Word.create({ text, fontSize, color, uniqueKey });
+  return NextResponse.json({ message: "Car Created" }, { status: 201 });
+}
