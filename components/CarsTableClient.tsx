@@ -12,17 +12,19 @@ import AddForm from '@/components/form/AddForm';
 import { DialogConformation, NotifyData, WordShape } from '@/types';
 import { headCells } from '@/constants';
 import CarsTableFunctionality from '@/components/CarsTableFunctionality';
-import { deleteCarAction } from '@/libs/services';
+import { deleteCarAction, getWords } from '@/libs/services';
 import ConfirmDialog from './ConfirmDialog';
 import EditCar from './EditCar';
 import Notification from './Notification';
 import ClipboardJS from 'clipboard';
 import EditIcon from '@mui/icons-material/Edit';
-import { useCars } from '@/libs/hooks';
+import { useCars, useDeleteCar } from '@/libs/hooks';
+import { useQuery } from '@tanstack/react-query';
+import Art from './Art';
 // import { useGetCar } from '@/libs/hooks';
 
 
-const CarsTableClient = (props: {words: WordShape[]}) => {
+const CarsTableClient = () => {
   const [filterFn, setFilterFn] = useState<any>({fn: (items: WordShape[]) => {return items}});
   const [openPopup, setOpenPopup] = useState<boolean>(false);
   const [form, setForm] = useState<string>('');
@@ -31,7 +33,9 @@ const CarsTableClient = (props: {words: WordShape[]}) => {
   const [shrink, setShrink] = useState<boolean>(false);
   const [notify, setNotify] = useState({isOpen: false, message: '', type: ''});
 
-  const { words } = props;
+  // const { words } = props;
+
+  const deleteCarMutation = useDeleteCar(setNotify);
 
   const {
     TblContainer,
@@ -64,16 +68,24 @@ const CarsTableClient = (props: {words: WordShape[]}) => {
     setOpenPopup(true)
   }
 
+  // const handleDeleteCar = (id: string) => {
+  //   deleteCarAction(id);
+  //   setConfirmDialog({
+  //     ...confirmDialog,
+  //     isOpen: false
+  //   });
+  //   setNotify({
+  //     isOpen: true,
+  //     message: 'Word successfully deleted',
+  //     type: 'success'
+  //   });
+  // } 
+
   const handleDeleteCar = (id: string) => {
-    deleteCarAction(id);
+    deleteCarMutation.mutate(id);
     setConfirmDialog({
       ...confirmDialog,
       isOpen: false
-    });
-    setNotify({
-      isOpen: true,
-      message: 'Word successfully deleted',
-      type: 'success'
     });
   } 
 
@@ -87,6 +99,10 @@ const CarsTableClient = (props: {words: WordShape[]}) => {
     }
   }, []);
 
+
+
+  // const { status, isFetching, error, data} = useCars();
+
   const { status, isFetching, error, data} = useCars();
 
   if (isFetching) return (
@@ -97,10 +113,30 @@ const CarsTableClient = (props: {words: WordShape[]}) => {
   )
   if (status === 'error') return <h1>{JSON.stringify(error)}</h1>
   if (!data) return <h1>Car not found</h1>
-  console.log(data)
+  console.log(data.words)
+  // const words: WordShape[] | undefined = data;
 
   return (
-      <>
+    <>
+      <Art />
+      <Box
+        sx={{
+          overflowY: 'auto',
+          '&::-webkit-scrollbar': {
+            width:  '10px',
+          },
+          '&::-webkit-scrollbar-track': {
+            bgcolor: '#1e293b',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            bgcolor: '#151c29',
+
+          },
+          '&::-webkit-scrollbar-thumb: hover': {
+            bgcolor: '#121823',
+          },
+        }}
+      >
         <Toolbar sx={{position: 'relative', display: 'flex', justifyContent: 'space-between'}}>
           <TextField
             label="Search words"
@@ -172,7 +208,7 @@ const CarsTableClient = (props: {words: WordShape[]}) => {
           <TblHead />
           <TableBody>
             {
-              carsAfterPagingAndSorting(words).map((item: any, index: number) => 
+              carsAfterPagingAndSorting(data.words).map((item: any, index: number) => 
                 (<TableRow 
                   key={index}
                   sx={{
@@ -279,6 +315,7 @@ const CarsTableClient = (props: {words: WordShape[]}) => {
       </Popup>
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
       <Notification notify={notify} setNotify={setNotify} />
+    </Box>
     </>
   )
 

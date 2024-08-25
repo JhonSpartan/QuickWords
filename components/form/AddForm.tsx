@@ -1,6 +1,7 @@
 "use client"
 
 import { fontSizes, words } from '@/constants';
+import { useCreateCar } from '@/libs/hooks';
 import { createCarAction } from '@/libs/services';
 import { NotifyData, WordShape} from '@/types';
 import { Autocomplete, Box, Button, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField } from '@mui/material';
@@ -25,16 +26,12 @@ const AddForm = (props: {setOpenPopup: React.Dispatch<React.SetStateAction<boole
     uniqueKey: uniqueKey,
   }
 
+  const createCarMutation = useCreateCar(setNotify);
   const handleCreateCar = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    createCarAction(car);
-    setOpenPopup(false);
-    setNotify({
-      isOpen: true,
-      message: 'New word successfully added',
-      type: 'success'
-    });
-  } 
+    createCarMutation.mutate(car);
+    setOpenPopup(false)
+  }
 
   return (
     <form onSubmit={handleCreateCar}>

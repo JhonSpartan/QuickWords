@@ -6,6 +6,16 @@ import { connectToDB } from "../mongoose";
 import { WordShape } from "@/types";
 import Word from "../models/word.model";
 
+export async function getWords() {
+  try {
+    await connectToDB();
+    const data = await Word.find();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function createCarAction(word: WordShape) {
   try {
     const { text, fontSize, color, uniqueKey } = word;

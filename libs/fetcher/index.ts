@@ -7,11 +7,15 @@ class AppFetcher {
   private URL = ''
 
   async getCars() {
-    return axios.get(`${this.URL}/api/words`)
+    // return axios.get(`${this.URL}/api/words`)
+    const res = await axios.get(`${this.URL}/api/words`);
+    return res.data;
   }
 
   async getCar(id: string) {
-    return axios.get(`${this.URL}/api/words/${id}`)
+    const res = await axios.get(`${this.URL}/api/words/${id}`);
+    return res.data;
+
   }
 
   async createCar(word: WordShape) {
@@ -19,11 +23,11 @@ class AppFetcher {
   }
 
   async updateCar(word: WordShape) {
-    await axios.put(`${this.URL}/api/cars/${word._id}`, word); 
+    await axios.put(`${this.URL}/api/words/${word._id}`, word); 
   }
 
   async deleteCar(id: string) {
-    await axios.delete(`${this.URL}/api/cars/${id}`); 
+    await axios.delete(`${this.URL}/api/words/${id}`); 
   }
 }
 

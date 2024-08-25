@@ -1,6 +1,7 @@
 "use client"
 
 import { fontSizes, words } from '@/constants';
+import { useUpdateCar } from '@/libs/hooks';
 import { updateCarsAction } from '@/libs/services';
 import { Autocomplete, Box, Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@mui/material';
 import { useState, } from 'react'
@@ -13,18 +14,26 @@ const EditForm = ({setOpenPopup, word, id, setNotify}: any) => {
   const [newFontSize, setNewFontSize] = useState<string>(fontSize);
   const [newColor, setNewColor] = useState<string>(color);
 
-  const newCar = {text: newText, fontsSize: newFontSize, color: newColor};
+  // const newCar = {text: newText, fontsSize: newFontSize, color: newColor};
 
 
+  // const handleEditCar = (event: React.SyntheticEvent) => {
+  //   event.preventDefault();
+  //   updateCarsAction(newCar, id);
+  //   setOpenPopup();
+  //   setNotify({
+  //     isOpen: true,
+  //     message: 'Word successfully edited',
+  //     type: 'success'
+  //   });
+  // } 
+
+  const updateCarMutation = useUpdateCar(setNotify);
   const handleEditCar = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    updateCarsAction(newCar, id);
+    updateCarMutation.mutate({
+      ...word, text: newText, fontsSize: newFontSize, color: newColor })
     setOpenPopup();
-    setNotify({
-      isOpen: true,
-      message: 'Word successfully edited',
-      type: 'success'
-    });
   } 
 
   return (

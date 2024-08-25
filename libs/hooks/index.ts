@@ -1,5 +1,7 @@
 
-import { useMutation, useQuery, useQueryClient } from "react-query";
+// import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from  "@tanstack/react-query"
+
 import axios from "axios";
 import AppFetcher from '@/libs/fetcher';
 import { NotifyData, WordShape } from "@/types";
@@ -16,14 +18,20 @@ import { NotifyData, WordShape } from "@/types";
 //   );
 // }
 
+
 export const useCars = () => {
-  return useQuery(
-    ["words"],
-    () => AppFetcher.getCars(),
-    {
-      select: ({ data }) => data,
-    }
-  );
+  // return useQuery(
+  //   ["words"],
+  //   () => AppFetcher.getCars(),
+  //   {
+  //     select: ({ data }) => data,
+  //   }
+  // );
+  return useQuery({
+    queryKey: ["words"],
+    // queryFn: () => fetch("http://localhost:3000/api/words").then((res) => res.json())
+    queryFn: () => AppFetcher.getCars()
+  });
 }
 
 // export const useGetCar = (id: string) => {
@@ -35,6 +43,20 @@ export const useCars = () => {
 //     } 
 //   );
 // }
+
+export const useGetCar = (id: string) => {
+  return useQuery({
+    queryKey: ["words", parseInt(id)],
+    queryFn: () => AppFetcher.getCar(id)
+  }
+    
+    // ["word", parseInt(id)],
+    // () => AppFetcher.getCar(id),
+    // {
+    //   select: ({ data }) => data,
+    // } 
+  );
+}
 
 export function useCreateCar(setNotify: React.Dispatch<React.SetStateAction<NotifyData>>) {
 
